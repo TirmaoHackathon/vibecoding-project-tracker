@@ -199,6 +199,13 @@ export default function App() {
       console.error("Failed to copy task JSON", err);
     }
   };
+  const copyAllTasksJson = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(tasks, null, 2));
+    } catch (err) {
+      console.error("Failed to copy all tasks JSON", err);
+    }
+  };
 
   const openCreateModal = () => {
     setEditingTask(null);
@@ -319,12 +326,21 @@ export default function App() {
           <p className="text-sm text-text-muted">Vibecoding Project Tracker</p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary text-xl font-semibold text-white shadow-md transition hover:scale-105"
-        >
-          +
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={copyAllTasksJson}
+            className="rounded border px-4 py-2 text-sm font-medium hover:bg-black/5"
+          >
+            Copy All as JSON
+          </button>
+
+          <button
+            onClick={openCreateModal}
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary text-xl font-semibold text-white shadow-md transition hover:scale-105"
+          >
+            +
+          </button>
+        </div>
       </header>
 
       <main className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
