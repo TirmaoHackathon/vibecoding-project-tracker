@@ -46,6 +46,15 @@ export const STAGES = [
 // They become the only valid values for `Task.assignee`.
 export const TEAM = ["Teammate A", "Teammate B", "Teammate C"];
 
+export const AI_MODELS = [
+  "GPT-5.5",
+  "GPT-5",
+  "Claude Opus",
+  "Claude Sonnet",
+  "Gemini 2.5 Pro",
+  "Gemini 2.5 Flash",
+];
+
 /**
  * A tiny localStorage hook — survives reloads, no library needed.
  *
@@ -137,6 +146,7 @@ export default function App() {
       type: "feature",
       status: "todo",
       assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
       dueDate: "2026-06-10",
       createdDate: "2026-06-05",
     },
@@ -147,6 +157,7 @@ export default function App() {
       type: "bug",
       status: "in-progress",
       assignee: TEAM[1],
+      aiModel: AI_MODELS[0],
       dueDate: "2026-06-07",
       createdDate: "2026-06-05",
     },
@@ -157,6 +168,7 @@ export default function App() {
       type: "feature",
       status: "review",
       assignee: TEAM[2],
+      aiModel: AI_MODELS[0],
       dueDate: "2026-06-08",
       createdDate: "2026-06-05",
     },
@@ -167,6 +179,7 @@ export default function App() {
       type: "feature",
       status: "done",
       assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
       dueDate: null,
       createdDate: "2026-06-05",
     },
@@ -178,6 +191,7 @@ export default function App() {
     type: "feature",
     status: "todo",
     assignee: TEAM[0],
+    aiModel: AI_MODELS[0],
     dueDate: "",
   };
 
@@ -222,6 +236,7 @@ export default function App() {
       type: task.type,
       status: task.status,
       assignee: task.assignee,
+      aiModel: task.aiModel || AI_MODELS[0],
       dueDate: task.dueDate || "",
     });
 
@@ -433,10 +448,18 @@ export default function App() {
                           </div>
                         )}
 
-                        <div className="flex items-center justify-between text-xs text-text-muted">
-                          <span>{task.assignee}</span>
+                        <div className="space-y-2 text-xs text-text-muted">
+                          <div className="flex items-center justify-between">
+                            <span>{task.assignee}</span>
 
-                          {task.dueDate && <span>{task.dueDate}</span>}
+                            {task.dueDate && <span>{task.dueDate}</span>}
+                          </div>
+
+                          <div>
+                            <span className="rounded-full bg-brand-primary/10 px-2 py-1 text-[10px] font-medium text-brand-primary">
+                              {task.aiModel}
+                            </span>
+                          </div>
                         </div>
                       </article>
                     );
@@ -478,14 +501,26 @@ export default function App() {
                 className="w-full rounded border p-2"
               />
 
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                placeholder="Task description"
-                rows={4}
-                className="w-full rounded border p-2"
-              />
+              <div>
+                <label className="mb-1 block text-sm font-medium">
+                  Description (Markdown Supported)
+                </label>
+
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  placeholder={`# Goal
+
+- Requirement 1
+- Requirement 2
+
+**Notes**
+`}
+                  rows={8}
+                  className="w-full rounded border p-2 font-mono text-sm"
+                />
+              </div>
 
               <select
                 name="type"
@@ -522,7 +557,18 @@ export default function App() {
                   </option>
                 ))}
               </select>
-
+              <select
+                name="aiModel"
+                value={formData.aiModel}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+              >
+                {AI_MODELS.map((model) => (
+                  <option key={model} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
               <input
                 type="date"
                 name="dueDate"
