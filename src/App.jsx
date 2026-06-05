@@ -74,7 +74,7 @@ export function useLocalStorage(key, initialValue) {
 }
 
 export default function App() {
-  
+
   const [tasks, setTasks] = useLocalStorage("vibetracker.tasks", [
     {
       id: "1",
