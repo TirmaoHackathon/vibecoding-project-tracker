@@ -70,7 +70,6 @@ export function useLocalStorage(key, initialValue) {
       return initialValue;
     }
   });
-  
 
   useEffect(() => {
     try {
@@ -121,7 +120,6 @@ function getDueProgress(task) {
     100,
     Math.max(0, (elapsedWindow / totalWindow) * 100),
   );
-  
 
   let color = "bg-due-safe";
 
@@ -507,25 +505,55 @@ export default function App() {
                         }`}
                       >
                         <div className="mb-2 flex items-center justify-between">
-                          <span
-                            className={`h-2 w-2 rounded-full ${
+                          <div
+                            className={`rounded-full bg-brand-primary/10 p-2 px-3 mb-2 gap-2 flex items-center justify-between ${
                               task.type === "feature"
-                                ? "bg-type-feature"
-                                : "bg-type-bug"
+                                ? "bg-type-feature/10"
+                                : "bg-type-bug/10"
                             }`}
-                          />
+                          >
+                            <span
+                              className={`h-2 w-2 rounded-full ${
+                                task.type === "feature"
+                                  ? "bg-type-feature"
+                                  : "bg-type-bug"
+                              }`}
+                            />
+
+                            <span className="font-mono text-xs capitalize text-text-muted">
+                              {task.type}
+                            </span>
+                          </div>
 
                           <div className="flex items-center gap-2">
                             <button
                               onClick={(e) => copyTaskJson(task, e)}
                               className="rounded border px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-text-muted hover:bg-black/5"
                             >
-                              Copy JSON
+                              {/* Copy JSON */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-clipboard-icon lucide-clipboard"
+                              >
+                                <rect
+                                  width="8"
+                                  height="4"
+                                  x="8"
+                                  y="2"
+                                  rx="1"
+                                  ry="1"
+                                />
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                              </svg>
                             </button>
-
-                            <span className="font-mono text-xs capitalize text-text-muted">
-                              {task.type}
-                            </span>
                           </div>
                         </div>
 
@@ -548,9 +576,45 @@ export default function App() {
 
                         <div className="space-y-2 text-xs text-text-muted">
                           <div className="flex items-center justify-between">
-                            <span>{task.assignee}</span>
+                            <span className="inline-flex items-center gap-1">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-user-icon lucide-user"
+                              >
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                              </svg>
+                              {task.assignee}
+                            </span>
 
-                            {task.dueDate && <span>{task.dueDate}</span>}
+                            {task.dueDate && (
+                              <span className="inline-flex gap-1 items-center">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  class="lucide lucide-clock-icon lucide-clock"
+                                >
+                                  <circle cx="12" cy="12" r="10" />
+                                  <path d="M12 6v6l4 2" />
+                                </svg>
+                                {task.dueDate}
+                              </span>
+                            )}
                           </div>
 
                           <div>
@@ -600,14 +664,33 @@ export default function App() {
             </div>
 
             <div className="space-y-4">
-              <input
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Task title"
-                className="w-full rounded border p-2"
-              />
+              <div className="flex items-center gap-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-hash-icon lucide-hash"
+                >
+                  <line x1="4" x2="20" y1="9" y2="9" />
+                  <line x1="4" x2="20" y1="15" y2="15" />
+                  <line x1="10" x2="8" y1="3" y2="21" />
+                  <line x1="16" x2="14" y1="3" y2="21" />
+                </svg>
 
+                <input
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="Task title"
+                  className="w-full rounded border p-2"
+                />
+              </div>
               <div>
                 <label className="mb-1 block text-sm font-medium">
                   Description (Markdown Supported)
@@ -628,61 +711,143 @@ export default function App() {
                   className="w-full rounded border p-2 font-mono text-sm"
                 />
               </div>
+              <div className="flex items-center gap-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-captions-icon lucide-captions"
+                >
+                  <rect width="18" height="14" x="3" y="5" rx="2" ry="2" />
+                  <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
+                </svg>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                >
+                  <option value="feature">Feature</option>
+                  <option value="bug">Bug</option>
+                </select>
+              </div>
+              <div className="flex gap-1 items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-captions-icon lucide-captions"
+                >
+                  <rect width="18" height="14" x="3" y="5" rx="2" ry="2" />
+                  <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
+                </svg>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                >
+                  {STAGES.map((stage) => (
+                    <option key={stage.id} value={stage.id}>
+                      {stage.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="w-full rounded border p-2"
-              >
-                <option value="feature">Feature</option>
-                <option value="bug">Bug</option>
-              </select>
-
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full rounded border p-2"
-              >
-                {STAGES.map((stage) => (
-                  <option key={stage.id} value={stage.id}>
-                    {stage.label}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                name="assignee"
-                value={formData.assignee}
-                onChange={handleChange}
-                className="w-full rounded border p-2"
-              >
-                {TEAM.map((member) => (
-                  <option key={member} value={member}>
-                    {member}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="aiModel"
-                value={formData.aiModel}
-                onChange={handleChange}
-                className="w-full rounded border p-2"
-              >
-                {AI_MODELS.map((model) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="date"
-                name="dueDate"
-                value={formData.dueDate}
-                onChange={handleChange}
-                className="w-full rounded border p-2"
-              />
+              <div className="flex gap-1 items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-user-icon lucide-user"
+                >
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <select
+                  name="assignee"
+                  value={formData.assignee}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                >
+                  {TEAM.map((member) => (
+                    <option key={member} value={member}>
+                      {member}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-1 items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-astroid-icon lucide-astroid"
+                >
+                  <path d="M12.983 21.186a1 1 0 0 1-1.966 0 10 10 0 0 0-8.203-8.203 1 1 0 0 1 0-1.966 10 10 0 0 0 8.203-8.203 1 1 0 0 1 1.966 0 10 10 0 0 0 8.203 8.203 1 1 0 0 1 0 1.966 10 10 0 0 0-8.203 8.203" />
+                </svg>
+                <select
+                  name="aiModel"
+                  value={formData.aiModel}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                >
+                  {AI_MODELS.map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-1 items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-clock-icon lucide-clock"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={formData.dueDate}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                />
+              </div>
             </div>
 
             <div className="mt-6 flex justify-between">
