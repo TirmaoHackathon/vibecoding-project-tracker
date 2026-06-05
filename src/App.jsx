@@ -221,6 +221,14 @@ export default function App() {
     }
   };
 
+  const copyTaskDescription = async (description) => {
+    try {
+      await navigator.clipboard.writeText(description || "");
+    } catch (err) {
+      console.error("Failed to copy task description", err);
+    }
+  };
+
   const openCreateModal = () => {
     setEditingTask(null);
     setFormData(emptyTask);
@@ -483,12 +491,21 @@ export default function App() {
               </h2>
 
               {editingTask && (
-                <button
-                  onClick={() => copyTaskJson(editingTask)}
-                  className="rounded border px-3 py-2 text-sm font-medium hover:bg-black/5"
-                >
-                  Copy JSON
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => copyTaskDescription(formData.description)}
+                    className="rounded border px-3 py-2 text-sm font-medium hover:bg-black/5"
+                  >
+                    Copy Description
+                  </button>
+
+                  <button
+                    onClick={() => copyTaskJson(editingTask)}
+                    className="rounded border px-3 py-2 text-sm font-medium hover:bg-black/5"
+                  >
+                    Copy JSON
+                  </button>
+                </div>
               )}
             </div>
 
