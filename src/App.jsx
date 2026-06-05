@@ -74,7 +74,7 @@ export function useLocalStorage(key, initialValue) {
 }
 
 export default function App() {
-  const [tasks] = useLocalStorage("vibetracker.tasks", [
+  const [tasks, setTasks] = useLocalStorage("vibetracker.tasks", [
     {
       id: "1",
       title: "Build Kanban Layout",
@@ -117,21 +117,57 @@ export default function App() {
     },
   ]);
 
+  const [draggedTaskId, setDraggedTaskId] = useState(null);
+  const [dragOverStage, setDragOverStage] = useState(null);
+
+  const handleDragStart = (taskId) => {
+    setDraggedTaskId(taskId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedTaskId(null);
+    setDragOverStage(null);
+  };
+
+  const handleDragOver = (e, stageId) => {
+    e.preventDefault();
+    setDragOverStage(stageId);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverStage(null);
+  };
+
+  const handleDrop = (stageId) => {
+    if (!draggedTaskId) return;
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === draggedTaskId
+          ? {
+              ...task,
+              status: stageId,
+            }
+          : task,
+      ),
+    );
+
+    setDraggedTaskId(null);
+    setDragOverStage(null);
+  };
+
   return (
     <div className="min-h-screen bg-surface-page p-6 font-body">
-      {" "}
       <header className="mb-8 flex items-end justify-between">
-        {" "}
         <div>
-          {" "}
           <h1 className="font-heading text-2xl font-semibold text-brand-primary">
-            Cant-ban{" "}
-          </h1>{" "}
-          <p className="text-sm text-text-muted">
-            Vibecoding Project Tracker{" "}
-          </p>{" "}
-        </div>{" "}
+            Cant-ban
+          </h1>
+
+          <p className="text-sm text-text-muted">Vibecoding Project Tracker</p>
+        </div>
       </header>
+
       <main className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {STAGES.map((stage) => {
           const stageTasks = tasks.filter((task) => task.status === stage.id);
@@ -139,7 +175,14 @@ export default function App() {
           return (
             <section
               key={stage.id}
-              className="rounded-lg border border-brand-primary/10 bg-surface-card p-4"
+              onDragOver={(e) => handleDragOver(e, stage.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={() => handleDrop(stage.id)}
+              className={`rounded-lg border p-4 transition-all duration-200 ${
+                dragOverStage === stage.id
+                  ? "border-brand-primary bg-brand-primary/5 shadow-md"
+                  : "border-brand-primary/10 bg-surface-card"
+              }`}
             >
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
@@ -151,16 +194,23 @@ export default function App() {
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 min-h-[150px]">
                 {stageTasks.length === 0 ? (
                   <div className="rounded-md border-2 border-dashed border-text-muted/30 p-4 text-center text-sm text-text-muted">
-                    Nothing here yet — keep going.
+                    Drop a task here
                   </div>
                 ) : (
                   stageTasks.map((task) => (
                     <article
                       key={task.id}
-                      className="rounded-md border border-brand-primary/10 bg-white p-3 transition-shadow hover:shadow-cardHover"
+                      draggable
+                      onDragStart={() => handleDragStart(task.id)}
+                      onDragEnd={handleDragEnd}
+                      className={`rounded-md border border-brand-primary/10 bg-white p-3 cursor-grab active:cursor-grabbing transition-all hover:shadow-cardHover ${
+                        draggedTaskId === task.id
+                          ? "opacity-50 scale-[0.98]"
+                          : ""
+                      }`}
                     >
                       <div className="mb-2 flex items-center justify-between">
                         <span
@@ -171,7 +221,7 @@ export default function App() {
                           }`}
                         />
 
-                        <span className="font-mono text-xs text-text-muted">
+                        <span className="font-mono text-xs capitalize text-text-muted">
                           {task.type}
                         </span>
                       </div>
