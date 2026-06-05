@@ -188,6 +188,18 @@ export default function App() {
   const [draggedTaskId, setDraggedTaskId] = useState(null);
   const [dragOverStage, setDragOverStage] = useState(null);
 
+  const copyTaskJson = async (task, e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(task, null, 2));
+    } catch (err) {
+      console.error("Failed to copy task JSON", err);
+    }
+  };
+
   const openCreateModal = () => {
     setEditingTask(null);
     setFormData(emptyTask);
@@ -349,6 +361,7 @@ export default function App() {
                 ) : (
                   stageTasks.map((task) => {
                     const due = getDueProgress(task);
+
                     return (
                       <article
                         key={task.id}
@@ -371,9 +384,18 @@ export default function App() {
                             }`}
                           />
 
-                          <span className="font-mono text-xs capitalize text-text-muted">
-                            {task.type}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={(e) => copyTaskJson(task, e)}
+                              className="rounded border px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-text-muted hover:bg-black/5"
+                            >
+                              Copy JSON
+                            </button>
+
+                            <span className="font-mono text-xs capitalize text-text-muted">
+                              {task.type}
+                            </span>
+                          </div>
                         </div>
 
                         <h3 className="mb-1 text-sm font-medium text-text-primary">
@@ -384,7 +406,6 @@ export default function App() {
                           {task.description}
                         </p>
 
-                        {/* Due Date Progress Bar */}
                         {task.dueDate && (
                           <div className="mb-3">
                             <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10">
@@ -417,9 +438,20 @@ export default function App() {
             className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-4 text-lg font-semibold">
-              {editingTask ? "Edit Task" : "New Task"}
-            </h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">
+                {editingTask ? "Edit Task" : "New Task"}
+              </h2>
+
+              {editingTask && (
+                <button
+                  onClick={() => copyTaskJson(editingTask)}
+                  className="rounded border px-3 py-2 text-sm font-medium hover:bg-black/5"
+                >
+                  Copy JSON
+                </button>
+              )}
+            </div>
 
             <div className="space-y-4">
               <input
