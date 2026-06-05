@@ -283,7 +283,7 @@ The dashboard should provide a quick overview of project progress.
       status: "in-progress",
       assignee: TEAM[2],
       aiModel: AI_MODELS[1],
-      dueDate: "2026-06-11",
+      dueDate: "2026-06-3",
       createdDate: "2026-06-05",
     },
     {
@@ -323,7 +323,7 @@ Validate that the implementation follows the design system.
 - [ ] Spacing follows guidelines
 - [ ] Components support dark mode
 `,
-      type: "feature",
+      type: "bug",
       status: "review",
       assignee: TEAM[2],
       aiModel: AI_MODELS[0],
@@ -351,7 +351,7 @@ Evaluate the onboarding flow from the perspective of a first-time user.
 
 Document findings and propose improvements.
 `,
-      type: "feature",
+      type: "bug",
       status: "review",
       assignee: TEAM[1],
       aiModel: AI_MODELS[0],
@@ -385,7 +385,7 @@ Test reminder scheduling and delivery.
 
 Record all edge cases encountered during testing.
 `,
-      type: "feature",
+      type: "bug",
       status: "review",
       assignee: TEAM[2],
       aiModel: AI_MODELS[0],
@@ -752,7 +752,17 @@ This provides the basis for future feature development and integration work.
 
       <main className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {STAGES.map((stage) => {
-          const stageTasks = tasks.filter((task) => task.status === stage.id);
+          // const stageTasks = tasks.filter((task) => task.status === stage.id);
+          const stageTasks = tasks
+            .filter((task) => task.status === stage.id)
+            .sort((a, b) => {
+              // Tasks ohne Due Date nach unten
+              if (!a.dueDate && !b.dueDate) return 0;
+              if (!a.dueDate) return 1;
+              if (!b.dueDate) return -1;
+
+              return new Date(a.dueDate) - new Date(b.dueDate);
+            });
 
           return (
             <section
