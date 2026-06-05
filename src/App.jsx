@@ -117,8 +117,93 @@ export default function App() {
     },
   ]);
 
+  const emptyTask = {
+    title: "",
+    description: "",
+    type: "feature",
+    status: "todo",
+    assignee: TEAM[0],
+    dueDate: "",
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [formData, setFormData] = useState(emptyTask);
+
   const [draggedTaskId, setDraggedTaskId] = useState(null);
   const [dragOverStage, setDragOverStage] = useState(null);
+
+  const openCreateModal = () => {
+    setEditingTask(null);
+    setFormData(emptyTask);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (task) => {
+    setEditingTask(task);
+
+    setFormData({
+      title: task.title,
+      description: task.description,
+      type: task.type,
+      status: task.status,
+      assignee: task.assignee,
+      dueDate: task.dueDate || "",
+    });
+
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingTask(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    if (!formData.title.trim()) return;
+
+    if (editingTask) {
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === editingTask.id
+            ? {
+                ...task,
+                ...formData,
+                dueDate: formData.dueDate || null,
+              }
+            : task,
+        ),
+      );
+    } else {
+      const newTask = {
+        id: crypto.randomUUID(),
+        ...formData,
+        dueDate: formData.dueDate || null,
+        createdDate: new Date().toISOString().slice(0, 10),
+      };
+
+      setTasks((prev) => [...prev, newTask]);
+    }
+
+    closeModal();
+  };
+
+  const handleDelete = () => {
+    if (!editingTask) return;
+
+    setTasks((prev) => prev.filter((task) => task.id !== editingTask.id));
+
+    closeModal();
+  };
 
   const handleDragStart = (taskId) => {
     setDraggedTaskId(taskId);
@@ -141,8 +226,8 @@ export default function App() {
   const handleDrop = (stageId) => {
     if (!draggedTaskId) return;
 
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === draggedTaskId
           ? {
               ...task,
@@ -166,6 +251,13 @@ export default function App() {
 
           <p className="text-sm text-text-muted">Vibecoding Project Tracker</p>
         </div>
+
+        <button
+          onClick={openCreateModal}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary text-xl font-semibold text-white shadow-md transition hover:scale-105"
+        >
+          +
+        </button>
       </header>
 
       <main className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -194,7 +286,7 @@ export default function App() {
                 </span>
               </div>
 
-              <div className="space-y-3 min-h-[150px]">
+              <div className="min-h-[150px] space-y-3">
                 {stageTasks.length === 0 ? (
                   <div className="rounded-md border-2 border-dashed border-text-muted/30 p-4 text-center text-sm text-text-muted">
                     Drop a task here
@@ -206,9 +298,10 @@ export default function App() {
                       draggable
                       onDragStart={() => handleDragStart(task.id)}
                       onDragEnd={handleDragEnd}
-                      className={`rounded-md border border-brand-primary/10 bg-white p-3 cursor-grab active:cursor-grabbing transition-all hover:shadow-cardHover ${
+                      onClick={() => openEditModal(task)}
+                      className={`cursor-pointer rounded-md border border-brand-primary/10 bg-white p-3 transition-all hover:shadow-cardHover ${
                         draggedTaskId === task.id
-                          ? "opacity-50 scale-[0.98]"
+                          ? "scale-[0.98] opacity-50"
                           : ""
                       }`}
                     >
@@ -247,6 +340,111 @@ export default function App() {
           );
         })}
       </main>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div
+            className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="mb-4 text-lg font-semibold">
+              {editingTask ? "Edit Task" : "New Task"}
+            </h2>
+
+            <div className="space-y-4">
+              <input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Task title"
+                className="w-full rounded border p-2"
+              />
+
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Task description"
+                rows={4}
+                className="w-full rounded border p-2"
+              />
+
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+              >
+                <option value="feature">Feature</option>
+                <option value="bug">Bug</option>
+              </select>
+
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+              >
+                {STAGES.map((stage) => (
+                  <option key={stage.id} value={stage.id}>
+                    {stage.label}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                name="assignee"
+                value={formData.assignee}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+              >
+                {TEAM.map((member) => (
+                  <option key={member} value={member}>
+                    {member}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                type="date"
+                name="dueDate"
+                value={formData.dueDate}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+              />
+            </div>
+
+            <div className="mt-6 flex justify-between">
+              <div>
+                {editingTask && (
+                  <button
+                    onClick={handleDelete}
+                    className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={closeModal}
+                  className="rounded border px-4 py-2"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleSave}
+                  className="rounded bg-brand-primary px-4 py-2 text-white"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
