@@ -73,8 +73,62 @@ export function useLocalStorage(key, initialValue) {
   return [value, setValue];
 }
 
+function getDueProgress(task) {
+  if (!task.dueDate) {
+    return {
+      percent: 100,
+      color: "bg-due-neutral",
+    };
+  }
+
+  const now = new Date();
+  const due = new Date(task.dueDate);
+
+  // Start counting 7 days before deadline
+  const warningStart = new Date(due);
+  warningStart.setDate(warningStart.getDate() - 7);
+
+  // Already overdue
+  if (now > due) {
+    return {
+      percent: 100,
+      color: "bg-due-overdue",
+    };
+  }
+
+  // More than a week left
+  if (now < warningStart) {
+    return {
+      percent: 0,
+      color: "bg-due-safe",
+    };
+  }
+
+  const totalWindow = due - warningStart;
+  const elapsedWindow = now - warningStart;
+
+  const percent = Math.min(
+    100,
+    Math.max(0, (elapsedWindow / totalWindow) * 100),
+  );
+
+  let color = "bg-due-safe";
+
+  if (percent >= 50) {
+    color = "bg-due-warning";
+  }
+
+  if (percent >= 90) {
+    color = "bg-due-overdue";
+  }
+
+  return {
+    percent,
+    color,
+  };
+}
+
 export default function App() {
- 
   const [tasks, setTasks] = useLocalStorage("vibetracker.tasks", [
     {
       id: "1",
@@ -293,48 +347,63 @@ export default function App() {
                     Drop a task here
                   </div>
                 ) : (
-                  stageTasks.map((task) => (
-                    <article
-                      key={task.id}
-                      draggable
-                      onDragStart={() => handleDragStart(task.id)}
-                      onDragEnd={handleDragEnd}
-                      onClick={() => openEditModal(task)}
-                      className={`cursor-pointer rounded-md border border-brand-primary/10 bg-white p-3 transition-all hover:shadow-cardHover ${
-                        draggedTaskId === task.id
-                          ? "scale-[0.98] opacity-50"
-                          : ""
-                      }`}
-                    >
-                      <div className="mb-2 flex items-center justify-between">
-                        <span
-                          className={`h-2 w-2 rounded-full ${
-                            task.type === "feature"
-                              ? "bg-type-feature"
-                              : "bg-type-bug"
-                          }`}
-                        />
+                  stageTasks.map((task) => {
+                    const due = getDueProgress(task);
+                    return (
+                      <article
+                        key={task.id}
+                        draggable
+                        onDragStart={() => handleDragStart(task.id)}
+                        onDragEnd={handleDragEnd}
+                        onClick={() => openEditModal(task)}
+                        className={`relative overflow-hidden cursor-pointer rounded-md border border-brand-primary/10 bg-white p-3 pr-5 transition-all hover:shadow-cardHover ${
+                          draggedTaskId === task.id
+                            ? "scale-[0.98] opacity-50"
+                            : ""
+                        }`}
+                      >
+                        <div className="mb-2 flex items-center justify-between">
+                          <span
+                            className={`h-2 w-2 rounded-full ${
+                              task.type === "feature"
+                                ? "bg-type-feature"
+                                : "bg-type-bug"
+                            }`}
+                          />
 
-                        <span className="font-mono text-xs capitalize text-text-muted">
-                          {task.type}
-                        </span>
-                      </div>
+                          <span className="font-mono text-xs capitalize text-text-muted">
+                            {task.type}
+                          </span>
+                        </div>
 
-                      <h3 className="mb-1 text-sm font-medium text-text-primary">
-                        {task.title}
-                      </h3>
+                        <h3 className="mb-1 text-sm font-medium text-text-primary">
+                          {task.title}
+                        </h3>
 
-                      <p className="mb-3 text-xs text-text-muted">
-                        {task.description}
-                      </p>
+                        <p className="mb-3 text-xs text-text-muted">
+                          {task.description}
+                        </p>
 
-                      <div className="flex items-center justify-between text-xs text-text-muted">
-                        <span>{task.assignee}</span>
+                        {/* Due Date Progress Bar */}
+                        {task.dueDate && (
+                          <div className="mb-3">
+                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10">
+                              <div
+                                className={`h-full transition-all duration-300 ${due.color}`}
+                                style={{ width: `${due.percent}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
 
-                        {task.dueDate && <span>{task.dueDate}</span>}
-                      </div>
-                    </article>
-                  ))
+                        <div className="flex items-center justify-between text-xs text-text-muted">
+                          <span>{task.assignee}</span>
+
+                          {task.dueDate && <span>{task.dueDate}</span>}
+                        </div>
+                      </article>
+                    );
+                  })
                 )}
               </div>
             </section>
