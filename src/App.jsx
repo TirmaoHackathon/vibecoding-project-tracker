@@ -139,11 +139,28 @@ function getDueProgress(task) {
 
 export default function App() {
   const [tasks, setTasks] = useLocalStorage("vibetracker.tasks", [
+    // TODO (4)
     {
       id: "1",
       title: "Meta Prompt for Data Clustering",
-      description:
-        "You are tasked with clustering the data points below into logical groups. You are an expert data analyst and act with this kind of expertise. The data below is qualitative feedback collected for this platform and is the result of a survey conducted with a number of different users. Please output a bulleted markdown list with headings containing emojis, a short description of the category and the individual datapoints as the bullet points. Follow this example: Praise 🤩 - What users were happy with - *The platform has a good overview *It's not too flashy ...",
+      description: `
+## Goal
+
+Analyze the survey responses and group them into meaningful categories.
+
+### Requirements
+
+- Create **4–8 clusters**
+- Add an emoji to each category
+- Provide a short explanation
+- Keep the original wording whenever possible
+
+### Output Example
+
+- 🤩 **Praise** – Positive feedback about the product
+- 🐛 **Bugs** – Technical issues reported by users
+- 💡 **Feature Requests** – Ideas for future improvements
+`,
       type: "feature",
       status: "todo",
       assignee: TEAM[0],
@@ -154,7 +171,8 @@ export default function App() {
     {
       id: "2",
       title: "Conceptualize Final Project",
-      description: "Create a concept for the final project",
+      description:
+        "Create a concept for the final project including objectives, target audience, success criteria, and a roadmap for implementation.",
       type: "feature",
       status: "todo",
       assignee: TEAM[0],
@@ -165,7 +183,16 @@ export default function App() {
     {
       id: "3",
       title: "Find Topic for Bachelor's Thesis",
-      description: "Find a topic for your bachelor's thesis",
+      description: `
+Research potential thesis topics in the fields of:
+
+- Artificial Intelligence
+- Human-Computer Interaction
+- Data Visualization
+- Software Engineering
+
+Select three promising candidates and prepare a short justification for each.
+`,
       type: "feature",
       status: "todo",
       assignee: TEAM[0],
@@ -175,9 +202,34 @@ export default function App() {
     },
     {
       id: "4",
-      title: "Enjoy this demo",
+      title: "Research Competitor Tools",
+      description: `
+Conduct a market analysis of competing products.
+
+### Compare
+
+| Product | Strengths | Weaknesses |
+|----------|-----------|------------|
+| Notion | Flexible | Complex onboarding |
+| Trello | Easy to use | Limited customization |
+| Jira | Powerful | Steep learning curve |
+
+Provide a summary of findings and identify opportunities for differentiation.
+`,
+      type: "feature",
+      status: "todo",
+      assignee: TEAM[1],
+      aiModel: AI_MODELS[1],
+      dueDate: "2026-06-12",
+      createdDate: "2026-06-05",
+    },
+
+    // IN PROGRESS (4)
+    {
+      id: "5",
+      title: "Enjoy this Demo",
       description:
-        "Please watch this demo and enjoy. Feel free to give feedback at the end.",
+        "Watch the complete demo, test all major workflows, and collect feedback regarding usability and performance.",
       type: "feature",
       status: "in-progress",
       assignee: TEAM[2],
@@ -186,9 +238,91 @@ export default function App() {
       createdDate: "2026-06-05",
     },
     {
-      id: "5",
-      title: "Review UI styling",
-      description: "Match DESIGN.md colors and typography.",
+      id: "6",
+      title: "Implement Task Filtering",
+      description: `
+Add filtering functionality for:
+
+- Status
+- Assignee
+- AI Model
+- Due Date
+
+The filters should work together and update the task list instantly.
+`,
+      type: "feature",
+      status: "in-progress",
+      assignee: TEAM[1],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-09",
+      createdDate: "2026-06-05",
+    },
+    {
+      id: "7",
+      title: "Create Dashboard Widgets",
+      description: `
+# Dashboard Widgets
+
+The dashboard should provide a quick overview of project progress.
+
+## Widgets to implement
+
+- Task completion rate
+- Open tasks by status
+- Team workload distribution
+- Recent activity feed
+
+### Success Criteria
+
+- Updates automatically
+- Responsive layout
+- Consistent styling
+- Loading states available
+`,
+      type: "feature",
+      status: "in-progress",
+      assignee: TEAM[2],
+      aiModel: AI_MODELS[1],
+      dueDate: "2026-06-11",
+      createdDate: "2026-06-05",
+    },
+    {
+      id: "8",
+      title: "Optimize Mobile Layout",
+      description: `
+Several layout issues have been reported on mobile devices.
+
+### Areas to Review
+
+- Navigation drawer
+- Kanban board scrolling
+- Task detail modal
+- Typography scaling
+
+Target devices include phones and tablets between 320px and 1024px width.
+`,
+      type: "feature",
+      status: "in-progress",
+      assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-10",
+      createdDate: "2026-06-05",
+    },
+
+    // REVIEW (4)
+    {
+      id: "9",
+      title: "Review UI Styling",
+      description: `
+Validate that the implementation follows the design system.
+
+### Checklist
+
+- [ ] Colors match DESIGN.md
+- [ ] Typography scale is consistent
+- [ ] Spacing follows guidelines
+- [ ] Components support dark mode
+`,
       type: "feature",
       status: "review",
       assignee: TEAM[2],
@@ -197,15 +331,147 @@ export default function App() {
       createdDate: "2026-06-05",
     },
     {
-      id: "6",
+      id: "10",
+      title: "Review User Onboarding",
+      description: `
+# Onboarding Review
+
+Evaluate the onboarding flow from the perspective of a first-time user.
+
+## Focus Areas
+
+1. Account creation
+2. First project setup
+3. Task creation workflow
+4. Understanding AI features
+
+> Is the next step always obvious?
+>
+> Are users overwhelmed by information?
+
+Document findings and propose improvements.
+`,
+      type: "feature",
+      status: "review",
+      assignee: TEAM[1],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-08",
+      createdDate: "2026-06-05",
+    },
+    {
+      id: "11",
+      title: "QA Task Creation",
+      description:
+        "Verify task creation, editing, deletion, drag-and-drop behavior, and local storage persistence across browser sessions.",
+      type: "feature",
+      status: "review",
+      assignee: TEAM[0],
+      aiModel: AI_MODELS[1],
+      dueDate: "2026-06-09",
+      createdDate: "2026-06-05",
+    },
+    {
+      id: "12",
+      title: "Review Notification System",
+      description: `
+Test reminder scheduling and delivery.
+
+### Expected Behavior
+
+- Upcoming due dates trigger reminders
+- Dismissed reminders stay dismissed
+- Notifications survive page reloads
+- Time zone handling is correct
+
+Record all edge cases encountered during testing.
+`,
+      type: "feature",
+      status: "review",
+      assignee: TEAM[2],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-09",
+      createdDate: "2026-06-05",
+    },
+
+    // DONE (4)
+    {
+      id: "13",
       title: "Commit all Milestones",
-      description: "Commit all milestones from the pdf",
+      description:
+        "All milestones from the project specification have been committed and documented in the repository.",
       type: "feature",
       status: "done",
       assignee: TEAM[0],
       aiModel: AI_MODELS[0],
       dueDate: null,
       createdDate: "2026-06-05",
+    },
+    {
+      id: "14",
+      title: "Setup Repository",
+      description: `
+# Repository Setup
+
+### Completed
+
+- [x] Git repository created
+- [x] Branch protection configured
+- [x] Pull request template added
+- [x] Issue templates created
+- [x] CI pipeline connected
+
+### Notes
+
+The project structure follows a feature-based architecture to improve scalability and maintainability as the codebase grows.
+`,
+      type: "feature",
+      status: "done",
+      assignee: TEAM[1],
+      aiModel: AI_MODELS[0],
+      dueDate: null,
+      createdDate: "2026-06-01",
+    },
+    {
+      id: "15",
+      title: "Configure Local Storage",
+      description: `
+Implemented persistent storage for:
+
+- Tasks
+- User preferences
+- Dashboard settings
+
+The application now restores its state automatically after a page refresh.
+`,
+      type: "feature",
+      status: "done",
+      assignee: TEAM[2],
+      aiModel: AI_MODELS[1],
+      dueDate: null,
+      createdDate: "2026-06-02",
+    },
+    {
+      id: "16",
+      title: "Create Project Skeleton",
+      description: `
+Initial project architecture completed.
+
+### Included
+
+- Routing setup
+- Layout system
+- Shared UI components
+- Theme configuration
+- State management foundation
+
+This provides the basis for future feature development and integration work.
+`,
+      type: "feature",
+      status: "done",
+      assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
+      dueDate: null,
+      createdDate: "2026-06-03",
     },
   ]);
 
@@ -397,14 +663,18 @@ export default function App() {
   return (
     <div className="min-h-screen bg-surface-page p-6 font-body">
       <header className="mb-8 flex items-end justify-between">
-        <div>
-          <h1 className="font-heading text-2xl font-semibold text-brand-primary">
-            Kan't-Ban
-          </h1>
+        <div className="flex gap-2">
+          <img src="./assets/favicon.svg" width={48} height={48} />
+          <div>
+            <h1 className="font-heading text-2xl font-semibold text-brand-primary">
+              Kan't-Ban
+            </h1>
 
-          <p className="text-sm text-text-muted">Vibecoding Project Tracker</p>
+            <p className="text-sm text-text-muted">
+              Vibecoding Project Tracker
+            </p>
+          </div>
         </div>
-
         <div className="flex items-center gap-3">
           <button
             onClick={copyAllTasksJson}
