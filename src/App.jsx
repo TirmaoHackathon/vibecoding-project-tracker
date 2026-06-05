@@ -44,7 +44,7 @@ export const STAGES = [
 
 // Replace these placeholders with the three names from PRD §8 before M4.
 // They become the only valid values for `Task.assignee`.
-export const TEAM = ["Teammate A", "Teammate B", "Teammate C"];
+export const TEAM = ["Marc", "Tim", "You guys"];
 
 export const AI_MODELS = [
   "GPT-5.5",
@@ -141,28 +141,52 @@ export default function App() {
   const [tasks, setTasks] = useLocalStorage("vibetracker.tasks", [
     {
       id: "1",
-      title: "Build Kanban Layout",
-      description: "Create the four board columns and render cards.",
+      title: "Meta Prompt for Data Clustering",
+      description:
+        "You are tasked with clustering the data points below into logical groups. You are an expert data analyst and act with this kind of expertise. The data below is qualitative feedback collected for this platform and is the result of a survey conducted with a number of different users. Please output a bulleted markdown list with headings containing emojis, a short description of the category and the individual datapoints as the bullet points. Follow this example: Praise 🤩 - What users were happy with - *The platform has a good overview *It's not too flashy ...",
       type: "feature",
       status: "todo",
       assignee: TEAM[0],
       aiModel: AI_MODELS[0],
       dueDate: "2026-06-10",
-      createdDate: "2026-06-05",
+      createdDate: "2026-01-05",
     },
     {
       id: "2",
-      title: "Fix localStorage persistence",
-      description: "Verify tasks survive page refresh.",
-      type: "bug",
+      title: "Conceptualize Final Project",
+      description: "Create a concept for the final project",
+      type: "feature",
+      status: "todo",
+      assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-10",
+      createdDate: "2026-01-05",
+    },
+    {
+      id: "3",
+      title: "Find Topic for Bachelor's Thesis",
+      description: "Find a topic for your bachelor's thesis",
+      type: "feature",
+      status: "todo",
+      assignee: TEAM[0],
+      aiModel: AI_MODELS[0],
+      dueDate: "2026-06-10",
+      createdDate: "2026-01-05",
+    },
+    {
+      id: "4",
+      title: "Enjoy this demo",
+      description:
+        "Please watch this demo and enjoy. Feel free to give feedback at the end.",
+      type: "feature",
       status: "in-progress",
-      assignee: TEAM[1],
+      assignee: TEAM[2],
       aiModel: AI_MODELS[0],
       dueDate: "2026-06-07",
       createdDate: "2026-06-05",
     },
     {
-      id: "3",
+      id: "5",
       title: "Review UI styling",
       description: "Match DESIGN.md colors and typography.",
       type: "feature",
@@ -173,9 +197,9 @@ export default function App() {
       createdDate: "2026-06-05",
     },
     {
-      id: "4",
-      title: "Prepare demo flow",
-      description: "Collect screenshots and demo tasks.",
+      id: "6",
+      title: "Commit all Milestones",
+      description: "Commit all milestones from the pdf",
       type: "feature",
       status: "done",
       assignee: TEAM[0],
@@ -375,7 +399,7 @@ export default function App() {
       <header className="mb-8 flex items-end justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold text-brand-primary">
-            Cant-ban
+            Kan't-Ban
           </h1>
 
           <p className="text-sm text-text-muted">Vibecoding Project Tracker</p>
@@ -538,10 +562,10 @@ export default function App() {
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-clipboard-icon lucide-clipboard"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-clipboard-icon lucide-clipboard"
                               >
                                 <rect
                                   width="8"
@@ -561,7 +585,7 @@ export default function App() {
                           {task.title}
                         </h3>
 
-                        <p className="mb-3 text-xs text-text-muted">
+                        <p className="line-clamp-3 text-xs text-text-muted">
                           {task.description}
                         </p>
 
@@ -584,10 +608,10 @@ export default function App() {
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-user-icon lucide-user"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-user-icon lucide-user"
                               >
                                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                                 <circle cx="12" cy="7" r="4" />
@@ -604,10 +628,10 @@ export default function App() {
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  class="lucide lucide-clock-icon lucide-clock"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  className="lucide lucide-clock-icon lucide-clock"
                                 >
                                   <circle cx="12" cy="12" r="10" />
                                   <path d="M12 6v6l4 2" />
@@ -672,10 +696,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-hash-icon lucide-hash"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-hash-icon lucide-hash"
                 >
                   <line x1="4" x2="20" y1="9" y2="9" />
                   <line x1="4" x2="20" y1="15" y2="15" />
@@ -719,10 +743,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-captions-icon lucide-captions"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-captions-icon lucide-captions"
                 >
                   <rect width="18" height="14" x="3" y="5" rx="2" ry="2" />
                   <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
@@ -745,10 +769,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-captions-icon lucide-captions"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-captions-icon lucide-captions"
                 >
                   <rect width="18" height="14" x="3" y="5" rx="2" ry="2" />
                   <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
@@ -775,10 +799,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-user-icon lucide-user"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-user-icon lucide-user"
                 >
                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
@@ -804,10 +828,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-astroid-icon lucide-astroid"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-astroid-icon lucide-astroid"
                 >
                   <path d="M12.983 21.186a1 1 0 0 1-1.966 0 10 10 0 0 0-8.203-8.203 1 1 0 0 1 0-1.966 10 10 0 0 0 8.203-8.203 1 1 0 0 1 1.966 0 10 10 0 0 0 8.203 8.203 1 1 0 0 1 0 1.966 10 10 0 0 0-8.203 8.203" />
                 </svg>
@@ -832,10 +856,10 @@ export default function App() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-clock-icon lucide-clock"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-clock-icon lucide-clock"
                 >
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 6v6l4 2" />

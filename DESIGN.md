@@ -31,37 +31,37 @@ These are the colors the build milestones will reference. Once chosen, paste the
 
 ### Brand
 
-| Token | Hex | Where it shows up |
-|---|---|---|
+| Token           | Hex         | Where it shows up               |
+| --------------- | ----------- | ------------------------------- |
 | `brand-primary` | `#6610f2ff` | Header, "+" button, focus rings |
-| `brand-accent` | `#5ef38cff` | Highlights, hover states, links |
-| `surface-page` | `#fafaffff` | Page background |
-| `surface-card` | `#EBEBFF` | Card background |
-| `text-primary` | `#000` | Body text |
-| `text-muted` | `#6F6F71` | Captions, dates, counts |
+| `brand-accent`  | `#5ef38cff` | Highlights, hover states, links |
+| `surface-page`  | `#fafaffff` | Page background                 |
+| `surface-card`  | `#EBEBFF`   | Card background                 |
+| `text-primary`  | `#000`      | Body text                       |
+| `text-muted`    | `#6F6F71`   | Captions, dates, counts         |
 
 ### Task type (M6 `tag-style`)
 
-| Token | Hex | When used |
-|---|---|---|
+| Token          | Hex       | When used                                     |
+| -------------- | --------- | --------------------------------------------- |
 | `type-feature` | `#6610F2` | Cards tagged `feature` (accent stripe + icon) |
-| `type-bug` | `#FF2E00` | Cards tagged `bug` (accent stripe + icon) |
+| `type-bug`     | `#FF2E00` | Cards tagged `bug` (accent stripe + icon)     |
 
 ### Due-date states (M8 `due-tint`)
 
-| Token | Hex | When used |
-|---|---|---|
-| `due-safe` | `#5EF38C` | More than 2 days out |
-| `due-warning` | `#FF2E00` | Less than 24 hours |
-| `due-overdue` | `#AD0000` | Past due |
+| Token         | Hex       | When used             |
+| ------------- | --------- | --------------------- |
+| `due-safe`    | `#5EF38C` | More than 2 days out  |
+| `due-warning` | `#FF2E00` | Less than 24 hours    |
+| `due-overdue` | `#AD0000` | Past due              |
 | `due-neutral` | `#6F6F71` | Done (overrides date) |
 
 ## 3. Typography
 
-| Role | Font | Why |
-|---|---|---|
-| Heading | `Mozilla Text` | `Clean and cleancut` |
-| Body | `Poppins` | `out of your way and readable` |
+| Role                           | Font            | Why                                   |
+| ------------------------------ | --------------- | ------------------------------------- |
+| Heading                        | `Mozilla Text`  | `Clean and cleancut`                  |
+| Body                           | `Poppins`       | `out of your way and readable`        |
 | Monospace (tags, badges, code) | `JetBrainsMono` | `it's just the best programming font` |
 
 Suggested sizes (override only if the design demands it):
@@ -86,19 +86,19 @@ One short sentence per element. These set the tone for the build phase — Perso
 
 Three lines of microcopy that capture the tone of the product. Keep it short — these are the words a stressed user reads at 11pm.
 
-| Where | Text |
-|---|---|
-| "+" button label | `+ Task` |
-| Empty column placeholder | `Nothing here yet — keep going.` |
-| Toast after "Copy as Prompt Context" | `Copied. Now paste it into the AI.` |
-| Confirm-delete message | `REALLY delete this task? You can't undo this.` |
-| Handoff toast (M7 `task-owner`) | `Handed off to {name}. They've got it.` |
+| Where                                | Text                                            |
+| ------------------------------------ | ----------------------------------------------- |
+| "+" button label                     | `+ Task`                                        |
+| Empty column placeholder             | `Nothing here yet — keep going.`                |
+| Toast after "Copy as Prompt Context" | `Copied. Now paste it into the AI.`             |
+| Confirm-delete message               | `REALLY delete this task? You can't undo this.` |
+| Handoff toast (M7 `task-owner`)      | `Handed off to {name}. They've got it.`         |
 
 ## 6. Logo / wordmark
 
 The tracker probably doesn't need a logo, but it does need a name and a wordmark style.
 
-- **Product name:** `Cant-ban` (match PRD §11 team identity)
+- **Product name:** `Kan't-Ban` (match PRD §11 team identity)
 - **Wordmark style:** `simple, Just the name in the heading font, brand-primary color, no icon.`
 
 ## 7. Out of scope (this hackathon)
