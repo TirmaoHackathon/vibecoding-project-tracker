@@ -70,6 +70,7 @@ export function useLocalStorage(key, initialValue) {
       return initialValue;
     }
   });
+  
 
   useEffect(() => {
     try {
@@ -499,7 +500,7 @@ export default function App() {
                         onDragStart={() => handleDragStart(task.id)}
                         onDragEnd={handleDragEnd}
                         onClick={() => openEditModal(task)}
-                        className={`relative overflow-hidden cursor-pointer rounded-md border border-brand-primary/10 bg-white p-3 pr-5 transition-all hover:shadow-cardHover ${
+                        className={`relative overflow-hidden cursor-pointer rounded-md border border-brand-primary/10 bg-white p-3 pr-6 transition-all hover:shadow-cardHover ${
                           draggedTaskId === task.id
                             ? "scale-[0.98] opacity-50"
                             : ""
@@ -537,13 +538,11 @@ export default function App() {
                         </p>
 
                         {task.dueDate && (
-                          <div className="mb-3">
-                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/10">
-                              <div
-                                className={`h-full transition-all duration-300 ${due.color}`}
-                                style={{ width: `${due.percent}%` }}
-                              />
-                            </div>
+                          <div className="absolute right-0 top-0 h-full w-2 overflow-hidden rounded-r-md bg-black/10">
+                            <div
+                              className={`absolute bottom-0 left-0 w-full transition-all duration-300 ${due.color}`}
+                              style={{ height: `${due.percent}%` }}
+                            />
                           </div>
                         )}
 
