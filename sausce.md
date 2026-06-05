@@ -3,4 +3,6 @@
 - Copy as Json
   - single Card
   - whole state
+- Drag & Drop
+- State Bar
 - 
