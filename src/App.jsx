@@ -120,6 +120,7 @@ function getDueProgress(task) {
     100,
     Math.max(0, (elapsedWindow / totalWindow) * 100),
   );
+  
 
   let color = "bg-due-safe";
 
@@ -184,6 +185,38 @@ export default function App() {
       createdDate: "2026-06-05",
     },
   ]);
+
+  const [deliverables, setDeliverables] = useLocalStorage(
+    "vibetracker.deliverables",
+    [
+      { id: "prd", label: "PRD", url: "" },
+      { id: "design", label: "Design Spec", url: "" },
+      { id: "demo", label: "Demo Video", url: "" },
+      { id: "deploy", label: "Production URL", url: "" },
+    ],
+  );
+
+  const updateDeliverable = (id, url) => {
+    setDeliverables((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              url,
+            }
+          : item,
+      ),
+    );
+  };
+
+  const isValidUrl = (value) => {
+    try {
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   const emptyTask = {
     title: "",
@@ -365,6 +398,64 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      <section className="mb-8 rounded-xl border border-brand-primary/10 bg-surface-card p-5">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="font-heading text-lg font-semibold">
+              Anchor Deliverables
+            </h2>
+
+            <p className="text-sm text-text-muted">
+              Key project outputs required for completion.
+            </p>
+          </div>
+
+          <div className="text-sm text-text-muted">
+            {deliverables.filter((d) => d.url.trim()).length} /{" "}
+            {deliverables.length} complete
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {deliverables.map((item) => {
+            const done = isValidUrl(item.url);
+
+            return (
+              <div
+                key={item.id}
+                className={`rounded-lg border p-4 transition ${
+                  done
+                    ? "border-green-300 bg-green-50"
+                    : "border-brand-primary/10"
+                }`}
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="font-medium">{item.label}</span>
+
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-medium ${
+                      done
+                        ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {done ? "✓ Done" : "Pending"}
+                  </span>
+                </div>
+
+                <input
+                  type="url"
+                  placeholder="Paste URL..."
+                  value={item.url}
+                  onChange={(e) => updateDeliverable(item.id, e.target.value)}
+                  className="w-full rounded border p-2 text-sm"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       <main className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {STAGES.map((stage) => {
